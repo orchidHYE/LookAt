@@ -7,6 +7,7 @@ import java.util.List;
 import exhibition.dao.ExhibitionDAO;
 import exhibition.dao.ExhibitionPage;
 import exhibition.model.Exhibition;
+import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 
 public class ListExhibitionService {
@@ -16,7 +17,7 @@ public class ListExhibitionService {
 	
 	//수업
 	public ExhibitionPage getExhibitionPage(int pageNum) {
-		Connection conn;
+		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
 			
@@ -35,6 +36,8 @@ public class ListExhibitionService {
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
 		}
 	 }
 

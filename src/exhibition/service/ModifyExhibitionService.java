@@ -8,7 +8,7 @@ import exhibition.dao.ExhibitionDAO;
 import exhibition.exception.ArticleNotFoundException;
 import exhibition.exception.PermissionDeniedException;
 import exhibition.model.Exhibition;
-import jdbc.JDBCUtil;
+import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 
 public class ModifyExhibitionService {
@@ -41,10 +41,10 @@ public class ModifyExhibitionService {
 				conn.commit();
 			} catch (SQLException e) {
 				e.printStackTrace();
-				JDBCUtil.rollback(conn);
+				JdbcUtil.rollback(conn);
 				throw new RuntimeException();
 			}finally {
-				JDBCUtil.close(conn);
+				JdbcUtil.close(conn);
 			}
 			
 		}

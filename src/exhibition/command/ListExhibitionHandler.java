@@ -30,13 +30,13 @@ public class ListExhibitionHandler implements CommandHandler{
 		 
 		
 		//2.비즈니스로직 처리
+		//전시회 목록 페이지에 들어갈 요소들은 exhibitionPage라는 변수로 선언
 		ExhibitionPage exhibitionPage = listExhibitionService.getExhibitionPage(pageNo);
-		
+
 		//3.Model
 		request.setAttribute("exhibitionPage", exhibitionPage); //총 게시글수
-		request.setAttribute("nowPage", pageNo); //현재페이지
+		request.setAttribute("pageNo", pageNo); //현재페이지
 		
-		//request.setAttribute("content", content);
 		//4.View
 		return request.getContextPath() + FORM_VIEW;
 	}

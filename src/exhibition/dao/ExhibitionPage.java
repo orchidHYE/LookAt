@@ -17,6 +17,8 @@ public class ExhibitionPage {
 
 	
 	//생성자
+	
+	
 	//ListArticleService에서 총게시글 수 + 목록조회 (페이징처리)등의 정보
 	//int total //총게시글수
 	//List<Article> content //article 목록 

@@ -17,7 +17,7 @@
 				<c:if test="${errors.title }" ><span class="error">제목을 입력하세요</span></c:if>
 			</div>
 			<div class="mb-4">
-				<label for="memberNick" class="form-label">${modReq.open_date}</label>
+				<label for="open_date" class="form-label">${modReq.open_date}</label>
 				<input type="date" name="open_date" id="open_date" class="form-control" value="${AUTH_USER.id}"/><br/>
 				<c:if test="${errors.open_date }">제목을 입력하세요</c:if> 
 			</div>

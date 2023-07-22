@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exhibition.model.Exhibition;
-import jdbc.JDBCUtil;
+import jdbc.JdbcUtil;
 
 public class ExhibitionDAO {
 
@@ -33,7 +33,7 @@ public class ExhibitionDAO {
 
 			return insertedCnt;
 		} finally { // 5.자원반납
-			JDBCUtil.close(stmt);
+			JdbcUtil.close(stmt);
 		}
 	}
 	
@@ -57,8 +57,8 @@ public class ExhibitionDAO {
 			} // while
 			return result;
 		} finally { // 5.자원반납
-			JDBCUtil.close(rs);
-			JDBCUtil.close(stmt);
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
 		}
 
 	}
@@ -90,8 +90,8 @@ public class ExhibitionDAO {
 			}
 			return detailData;
 		} finally {
-			JDBCUtil.close(rs);
-			JDBCUtil.close(stmt);
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
 		}
 		
 	}		
@@ -113,7 +113,7 @@ public class ExhibitionDAO {
 			return stmt.executeUpdate();
 			//update가 성공되면 1리턴, 실패시 0리턴
 		}finally {
-			JDBCUtil.close(stmt);
+			JdbcUtil.close(stmt);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class ExhibitionDAO {
 			return stmt.executeUpdate();
 			//delete가 성공되면 1리턴, 실패시 0리턴
 		}finally {
-			JDBCUtil.close(stmt);
+			JdbcUtil.close(stmt);
 		}
 	}
 
@@ -156,9 +156,10 @@ public class ExhibitionDAO {
 			return totalCNT;
 			
 		} finally {
-			JDBCUtil.close(rs);
-			JDBCUtil.close(stmt);
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
 		}
 		
 	} //selectCount();
+	
 }

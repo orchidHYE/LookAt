@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import exhibition.dao.ExhibitionDAO;
 import exhibition.model.Exhibition;
-import jdbc.JDBCUtil;
+import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import mvc.command.CommandHandler;
 
@@ -37,15 +37,15 @@ public class WriteExhibitionService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 
-			JDBCUtil.rollback(conn);
+			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 
-			JDBCUtil.rollback(conn);
+			JdbcUtil.rollback(conn);
 			throw e;
 		} finally {
-			JDBCUtil.close(conn);
+			JdbcUtil.close(conn);
 		}
 	}
 

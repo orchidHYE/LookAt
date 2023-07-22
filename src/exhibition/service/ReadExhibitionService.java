@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import exhibition.dao.ExhibitionDAO;
 import exhibition.exception.ExhibitionNotFoundException;
 import exhibition.model.Exhibition;
+import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 
 //상세정보 읽는 Service
@@ -16,7 +17,7 @@ public class ReadExhibitionService {
 	private ExhibitionDAO exhibitionDAO = new ExhibitionDAO();
 	
 	public Exhibition getDetail (int no) throws ExhibitionNotFoundException {
-		Connection conn ;
+		Connection conn = null;
 		
 		try {
 			conn = ConnectionProvider.getConnection();
@@ -31,6 +32,8 @@ public class ReadExhibitionService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
+		} finally {
+			JdbcUtil.close(conn);
 		}
 		
 	}

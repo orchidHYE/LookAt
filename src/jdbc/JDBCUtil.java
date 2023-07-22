@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 //p434 - Connection, Statement, ResultSet 사용후 자원 반환 및 rollback 기능 제공
-public class JDBCUtil {
+public class JdbcUtil {
 
 	//connection 반환
 	public static void close (Connection conn) {
