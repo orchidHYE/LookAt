@@ -9,6 +9,7 @@ import mvc.command.CommandHandler;
 
 public class MainHandler implements CommandHandler {
 
+	private String FOEM_VIEW = "/index.jsp";
 	private ListExhibitionService listExhibitionService = new ListExhibitionService();
 	
 	@Override
@@ -33,7 +34,7 @@ public class MainHandler implements CommandHandler {
 		
 		//request.setAttribute("content", content);
 		//4.View
-		return null;
+		return FOEM_VIEW;
 	}
 
 }

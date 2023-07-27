@@ -24,11 +24,11 @@ public class ReadExhibitionService {
 			//모든 컬럼조회하는 쿼리문 DAO에서 가져옴
 			exhibitionDAO.getDetail(conn, no);
 			
-			Exhibition exbition = exhibitionDAO.getDetail(conn, no);
-			if(exbition == null) {
+			Exhibition exhibition = exhibitionDAO.getDetail(conn, no);
+			if(exhibition == null) {
 				throw new ExhibitionNotFoundException();
 			}
-			return exbition;
+			return exhibition;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException();

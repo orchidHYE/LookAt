@@ -1,5 +1,6 @@
 package exhibition.command;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,12 +25,12 @@ public class WriteExhibitionHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("WriteArticleHandler의 process()진입");
+		System.out.println("WriteExhibitionService의 process()진입");
 
 		if (request.getMethod().equalsIgnoreCase("get")) { // 요청방식이 get 방식이면 FORM_VIEW 보여주기
 			return processForm(request, response);
-		} else if (request.getMethod().equalsIgnoreCase("post")) { // 요청방식이 post 방식이면 회원가입 처리
-			return processSubmit(request, response); // p607 25라인
+		} else if (request.getMethod().equalsIgnoreCase("post")) { // 요청방식이 post 방식이면 글 등록 처리
+			return processSubmit(request, response);
 		} else {
 			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED); // 405오류
 			return null;
@@ -38,16 +39,19 @@ public class WriteExhibitionHandler implements CommandHandler {
 	}
 
 	// 글등록 폼을 보여주기 - 641 31라인
-	private String processForm(HttpServletRequest request, HttpServletResponse response) {
+	private String processForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		User user = (User) request.getSession(false).getAttribute("AUTH_USER");
-
-		/*
-		 * if (user.getId().equals("admin")) { return FORM_VIEW; } else {
-		 * response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 주최신청게시판
-		 * 할 경우 수정 return null; }
-		 */
-		return FORM_VIEW;
+		
+		
+		if (user == null) {
+			response.sendRedirect(request.getContextPath() + "/login.do");
+		}
+		else if (user.getId().equals("admin")) { 
+			  return FORM_VIEW; 
+		} 
+		
+		return null;
 	}
 
 	// 글등록 처리 p641 35라인
@@ -60,7 +64,7 @@ public class WriteExhibitionHandler implements CommandHandler {
 		User user = (User) request.getSession(false).getAttribute("AUTH_USER");
 		HttpSession session = request.getSession();
 
-		Exhibition writeRequest = createWriteRequest(request);// p641 40라인
+		Exhibition writeRequest = createWriteRequest(request);
 		writeRequest.validate(errors); // 필수입력검사
 
 		// p641 43라인
@@ -83,14 +87,19 @@ public class WriteExhibitionHandler implements CommandHandler {
 
 	// 작성자 정보
 	private Exhibition createWriteRequest(HttpServletRequest request) throws SQLException {
-		String title = request.getParameter("title");
-		Date open_date = Date.valueOf(request.getParameter("open_date"));
-		Date end_date = Date.valueOf(request.getParameter("end_date"));
-		String place = request.getParameter("place");
-		String thumbnail = request.getParameter("thumbnail");
-		String details_img = request.getParameter("details_img");
-		String introduction = request.getParameter("introduction");
-		return new Exhibition(title, open_date, end_date, place, thumbnail, details_img, introduction);
+		Exhibition exhibition = new Exhibition();
+		exhibition.setTitle(request.getParameter("title"));
+		exhibition.setOpen_date(Date.valueOf(request.getParameter("open_date")));
+		exhibition.setEnd_date(Date.valueOf(request.getParameter("end_date")));
+		exhibition.setPlace( request.getParameter("place"));
+		exhibition.setThumbnail(request.getParameter("thumbnail"));
+		exhibition.setDetails_img(request.getParameter("details_img"));
+		exhibition.setIntroduction(request.getParameter("introduction"));
+		exhibition.setPrice_adult( Integer.parseInt(request.getParameter("price_adult")));
+		exhibition.setPrice_student(Integer.parseInt(request.getParameter("price_student")));
+		exhibition.setPrice_baby(Integer.parseInt(request.getParameter("price_baby")));
+		exhibition.setDetails_place(request.getParameter("details_place"));
+		return exhibition;
 	}
 
 }

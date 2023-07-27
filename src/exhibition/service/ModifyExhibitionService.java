@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import auth.service.User;
 import exhibition.dao.ExhibitionDAO;
-import exhibition.exception.ArticleNotFoundException;
+import exhibition.exception.ExhibitionNotFoundException;
 import exhibition.exception.PermissionDeniedException;
 import exhibition.model.Exhibition;
 import jdbc.JdbcUtil;
@@ -18,16 +18,19 @@ public class ModifyExhibitionService {
 
 		//수정처리-p667-17라인
 		//파라미터 ModifyRequest modReq-수정처리를 위한 세션에서 가져온 회원id, 글번호,제목,내용
-		public void modify(Exhibition modReq) throws ArticleNotFoundException, PermissionDeniedException {
+		public void modify(Exhibition modReq) throws PermissionDeniedException, ExhibitionNotFoundException {
+			
+			System.out.println("ModifyExhibitionService-modify() 진입");
+			
 			Connection conn = null;
 			try {
 				conn = ConnectionProvider.getConnection();
 				conn.setAutoCommit(false);
 				
 				//1.article테이블에 update하기전 해당글번호 가져오기
-				Exhibition article = exhibitionDAO.getDetail(conn, modReq.getExhibition_no());
-				if(article==null) {
-					throw new ArticleNotFoundException();
+				Exhibition exhibition = exhibitionDAO.getDetail(conn, modReq.getExhibition_no());
+				if(exhibition==null) {
+					throw new ExhibitionNotFoundException();
 				}
 				
 				//1.수정가능여부체크

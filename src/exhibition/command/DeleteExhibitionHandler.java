@@ -12,6 +12,9 @@ public class DeleteExhibitionHandler implements CommandHandler {
 	
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		System.out.println("DeleteExhibitionHandler-process() 진입");
+		
 		//1.파라미터받기
 		int no = Integer.parseInt(request.getParameter("no"));//삭제하고 싶은 글번호
 		

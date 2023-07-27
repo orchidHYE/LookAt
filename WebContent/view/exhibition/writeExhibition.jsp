@@ -28,9 +28,31 @@
 				<input type="date" name="end_date" id="end_date" class="form-control"><br/>
 			</div>
 			<div class="mb-4" >
+				<label for="price_adult" class="form-label">성인</label>
+				<input type="number" name="price_adult" id="price_adult" class="form-control"><br/>
+			</div>
+			<div class="mb-4" >
+				<label for="price_student" class="form-label">학생</label>
+				<input type="number" name="price_student" id="price_student" class="form-control"><br/>
+			</div>
+			<div class="mb-4" >
+				<label for="price_baby" class="form-label">어린이</label>
+				<input type="number" name="price_baby" id="price_baby" class="form-control"><br/>
+			</div>
+			<!-- <div class="mb-4" > ////////////////////////////지역 선택하게 하는걸로
+				<label for="loc" class="form-label">지역</label>
+				<input type="text" name="loc" id="loc" class="form-control"><br/>
+				<c:if test="${errors.place}" ><span class="error">내용을 입력하세요</span></c:if>
+			</div> -->
+			<div class="mb-4" >
 				<label for="place" class="form-label">장소</label>
 				<input type="text" name="place" id="place" class="form-control"><br/>
 				<c:if test="${errors.place}" ><span class="error">내용을 입력하세요</span></c:if>
+			</div>
+			<div class="mb-4" >
+				<label for="details_place" class="form-label">상세주소</label>
+				<input type="text" name="details_place" id="details_place" class="form-control"><br/>
+				<c:if test="${errors.details_place}" ><span class="error">상세주소를 입력하세요</span></c:if>
 			</div>
 			<div class="mb-4" >
 				<label for="thumbnail" class="form-label">포스터</label>

@@ -89,7 +89,7 @@ public class ExhibitionPage {
 	
 	@Override
 	public String toString() {
-		return "ArticlePage [total=" + total + ", content=" + content + "]";
+		return "ExhibitionPage [total=" + total + ", content=" + content + "]";
 	}
 	
 }

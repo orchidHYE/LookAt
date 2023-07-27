@@ -9,7 +9,7 @@
 <!-- CSS -->
 <link rel="stylesheet" href="../../css/listExhibiitonCss.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+<%-- <script>
 $(document).ready(function() {
   var page = 1; // 현재 페이지를 나타내는 변수
 
@@ -44,29 +44,25 @@ $(document).ready(function() {
     });
   });
 });
-</script>
+</script> --%>
 </head>
 <body>
 
 <br/>
-${pageNo}
+${exhibitionPage}
 
 <div id="exhibitionContainer">
 <c:forEach var="item" items="${exhibitionPage.content}">
   <c:set var="_count" value="${_count+1}" />
 	  <tr>
 	    <td>
-	      <a href="read.do?no=${item.exhibition_no}"><img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}"/><a></a>
+	      <a href="read.do?no=${item.exhibition_no}"><img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}"/></a>
 	    </td>   
 	  </tr>
   <c:if test="${_count % 3 == 0}">
     	<br>
   </c:if>
   <c:if test="${_count == 9}">
-    <div>  
-			<!-- "더 보기" 버튼 -->
-			<button id="moreButton"><img src="<%=request.getContextPath() %>/img/etc/MORE.png"/></button>
-    </div>
   </c:if>
 </c:forEach>
 </div>
