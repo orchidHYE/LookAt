@@ -7,10 +7,10 @@
 
 
 html, body{ margin: 0; }
-h1 {
+/* h1 {
   position: fixed; top: 0; width: 100%; height: 60px; 
   text-align: center; background: white; margin: 0; line-height: 60px;
-}
+} */
 
 
 
@@ -175,7 +175,7 @@ input[id="hamburger"]:checked + label + div {
    margin-left:30vw;
    width:212px;
    height: 80px;
-   background-image: url("../img/LOGO.png");
+   background-image: url("http://localhost/view/image/LOGO.png");
    background-repeat: no-repeat;
    }
    
@@ -209,17 +209,16 @@ input[id="hamburger"]:checked + label + div {
    margin-left:30px;
    width:212px;
    height: 80px;
-   background-image: url("../img/LOGO.png");
+   background-image: url("http://localhost/view/image/LOGO.png");
    background-repeat: no-repeat;
 }
 
 .topMenu .searchbarBtn {
    float: left;
-   margin-top: 45px;
-   
+   margin-top: 45px;   
    width: 358px;
    height: 51px;
-   background-image: url("../img/검색창.png");
+   background-image: url("http://localhost/view/image/검색창.png");
    background-repeat: no-repeat;
 }
 
@@ -238,17 +237,15 @@ input[id="hamburger"]:checked + label + div {
 
 
 
-
 .topMenu .saveBtn {
    float: left;
    margin-top: 47px;
    margin-left: 50px;
    width: 33px;
    height: 43px;
-   background-image: url("../img/찜버튼.png");
+   background-image: url("http://localhost/view/image/찜버튼.png");
    background-repeat: no-repeat;
 }
-
 
 
 .topMenu .mypageBtn {
@@ -257,8 +254,15 @@ input[id="hamburger"]:checked + label + div {
    margin-left: 50px;
    width: 45px;
    height: 43px;
-   background-image: url("../img/마이페이지버튼.png");
+   background-image: url("http://localhost/view/image/마이페이지버튼.png");
    background-repeat: no-repeat;
+   z-index: 999;
+}
+
+.image-link{
+	position: absolute;
+	font-size: 80px;
+	margin-top: -50px;
 }
 
 .headerBox {
@@ -454,7 +458,4 @@ input[id="hamburger"]:checked + label + div {
    font-family: 'Roboto', sans-serif;
    font-family: 'Noto sans KR', sans-serif;
 }
-    
-    
-    
     

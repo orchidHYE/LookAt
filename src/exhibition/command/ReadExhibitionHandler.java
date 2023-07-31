@@ -28,7 +28,6 @@ public class ReadExhibitionHandler implements CommandHandler {
 			Exhibition detailData = readExhibitionService.getDetail(no);
 			
 			//3.Model
-			User user = (User )request.getSession().getAttribute("AUTH_USER");
 			request.setAttribute("detailData", detailData);
 			
 			//4.view

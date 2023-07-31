@@ -14,7 +14,10 @@ public class DeleteExhibitionService  {
 	ExhibitionDAO exhibitionDAO = new ExhibitionDAO();
 	
 	//delete쿼리를 통한 글삭제
-	public void delete(int no) throws ExhibitionNotFoundException {
+	public int delete(int no) throws ExhibitionNotFoundException {
+	
+		System.out.println("DeleteExhibitionService 진입");
+		
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
@@ -27,9 +30,10 @@ public class DeleteExhibitionService  {
 			}
 			
 			//2.article테이블에 delete하는 메서드호출
-			exhibitionDAO.delete(conn, no);
+			int deleteResult = exhibitionDAO.delete(conn, no);
 			
 			conn.commit();
+			return deleteResult;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			JdbcUtil.rollback(conn);

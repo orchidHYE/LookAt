@@ -1,10 +1,6 @@
 package exhibition.dao;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,41 +11,78 @@ public class ExhibitionDAO {
 
 	// 전시회 등록
 	public int insert(Connection conn, Exhibition exhibition) throws SQLException {
-		String sql = "INSERT INTO location (loc, details_place) "
-							+ "VALUES (?,?); "
-							+ "INSERT INTO exhibition (TITLE, OPEN_DATE, END_DATE, PLACE, THUMBNAIL, DETAILS_IMG, INTRODUCTION) "
-							+ "VALUES (?, ?, ?, ?, ?, ?, ?); "
-							+ "INSERT INTO price (price_adult, price_student, price_baby) "
-							+ "VALUES (?, ?, ?);";
-		PreparedStatement stmt = null;
+		System.out.println("insert DAO 진입");
+		System.out.println("[insert DAO] exhibition 데이터: " + exhibition.toString());
+
+		String sql_location = "INSERT INTO location (loc, place, details_place) VALUES (?, ?, ?)";
+		String sql_exhibition = "INSERT INTO exhibition (title, open_date, end_date, thumbnail, details_img, introduction, PLACE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String sql_price = "INSERT INTO price (price_adult, price_student, price_baby, exhibition_no) VALUES (?, ?, ?, ?)";
+		PreparedStatement stmt_location = null;
+		PreparedStatement stmt_exhibition = null;
+		PreparedStatement stmt_price = null;
+		ResultSet rs_exhibition = null;
+
 		try {
-			stmt = conn.prepareStatement(sql);
+			conn.setAutoCommit(false);  // 트랜잭션 시작
 
-			stmt.setString(1, exhibition.getTitle());
-			stmt.setDate(2, exhibition.getOpen_date());
-			stmt.setDate(3, exhibition.getEnd_date());
-			stmt.setString(4, exhibition.getPlace());
-			stmt.setString(5, exhibition.getThumbnail());
-			stmt.setString(6, exhibition.getDetails_img());
-			stmt.setString(7, exhibition.getIntroduction());
+			// location 테이블에 삽입
+			stmt_location = conn.prepareStatement(sql_location);
+			stmt_location.setString(1, exhibition.getLoc());
+			stmt_location.setString(2, exhibition.getPlace());
+			stmt_location.setString(3, exhibition.getDetails_place());
+			stmt_location.executeUpdate();
 
-			int insertedCnt = stmt.executeUpdate();
+			// exhibition 테이블에 삽입
+			stmt_exhibition = conn.prepareStatement(sql_exhibition, Statement.RETURN_GENERATED_KEYS);
+			stmt_exhibition.setString(1, exhibition.getTitle());
+			stmt_exhibition.setDate(2, exhibition.getOpen_date());
+			stmt_exhibition.setDate(3, exhibition.getEnd_date());
+			stmt_exhibition.setString(4, exhibition.getThumbnail());
+			stmt_exhibition.setString(5, exhibition.getDetails_img());
+			stmt_exhibition.setString(6, exhibition.getIntroduction());
+			stmt_exhibition.setString(7, exhibition.getPlace());
+			stmt_exhibition.executeUpdate();
 
-			return insertedCnt;
-		} finally { // 5.자원반납
-			JdbcUtil.close(stmt);
+			// 생성된 exhibition_no 가져오기
+			rs_exhibition = stmt_exhibition.getGeneratedKeys();
+			if (rs_exhibition.next()) {
+				int generated_exhibition_no = rs_exhibition.getInt(1);
+
+				// price 테이블에 삽입
+				stmt_price = conn.prepareStatement(sql_price);
+				stmt_price.setInt(1, exhibition.getPrice_adult());
+				stmt_price.setInt(2, exhibition.getPrice_student());
+				stmt_price.setInt(3, exhibition.getPrice_baby());
+				stmt_price.setInt(4, generated_exhibition_no);
+				stmt_price.executeUpdate();
+			} else {
+				throw new SQLException("Creating exhibition failed, no ID obtained.");
+			}
+
+			conn.commit();
+
+			return rs_exhibition.getInt(1);  // 직전에 작성된 글번호 리턴
+		} catch (SQLException e) {
+			conn.rollback();  
+			throw e;
+		} finally {
+			JdbcUtil.close(stmt_price);
+			JdbcUtil.close(rs_exhibition);
+			JdbcUtil.close(stmt_exhibition);
+			JdbcUtil.close(stmt_location);
 		}
 	}
-	
-	
-	
+
+
+
+
 	// 전시회 목록
 	public List<Exhibition> getList(Connection conn, int startRow, int size) throws SQLException {
-		String sql = "select e.exhibition_no,e.title,e.open_date,e.end_date,e.PLACE,e.thumbnail,e.details_img,e.introduction, p.price_no, p.price_adult, p.price_student, p.price_baby, l.loc_no, l.loc, l.details_place " + 
-							  "from exhibition e,price p,location l " + 
-							  "where e.exhibition_no = p.exhibition_no " + 
-							  "and e.PLACE = l.place " + 
-							  "order by exhibition_no desc limit ?,?";
+		String sql = "select e.exhibition_no,e.title,e.open_date,e.end_date,e.PLACE,e.thumbnail,e.details_img,e.introduction, p.price_no, p.price_adult, p.price_student, p.price_baby, l.loc_no, l.loc, l.details_place " +
+							  "from exhibition e,price p,location l " +
+							  "where e.exhibition_no = p.exhibition_no " +
+							  "and e.PLACE = l.place " +
+							  "order by exhibition_no desc LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -68,7 +101,6 @@ public class ExhibitionDAO {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(stmt);
 		}
-
 	}
 
 	// 전시회 상세조회
@@ -93,36 +125,73 @@ public class ExhibitionDAO {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(stmt);
 		}
-		
-	}		
-		
-	
-	
-	
+	}
 
 	// 전시회 수정
-	//타이틀만 수정하는게 아니라 모든걸 수정할 수 있어야지 ㅡㅡ
-	public int update(Connection conn, int no, String title) throws SQLException {
+	public int update(Connection conn, Exhibition exhibition) throws SQLException {
 		
 		System.out.println("update DAO진입");
-		
-		String sql = "update exhibition " +
-							  "set title = ? " + 
-							  "where exhibition_no = ?";
-		PreparedStatement stmt = null;
+		System.out.println("[update DAO]exhibition 데이터: " + exhibition.toString());
+
+		String sql_location = "update location set loc=?, place=?, details_place=? where loc_no=?";
+		String sql_exhibition = "update exhibition set title = ?, open_date = ?, end_date = ?, thumbnail = ?, details_img = ?, introduction = ? where exhibition_no = ?";
+		String sql_price = "update price set price_adult = ?, price_student = ?, price_baby = ? where price_no = ?";
+		PreparedStatement stmt_location = null;
+		PreparedStatement stmt_exhibition = null;
+		PreparedStatement stmt_price = null;
+
 		try {
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1,title);
-			stmt.setInt(2,no);
-			return stmt.executeUpdate();
+			stmt_exhibition = conn.prepareStatement((sql_exhibition));
+			stmt_exhibition.setString(1, exhibition.getTitle());
+			stmt_exhibition.setDate(2, exhibition.getOpen_date());
+			stmt_exhibition.setDate(3, exhibition.getEnd_date());
+			stmt_exhibition.setString(4, exhibition.getThumbnail());
+			stmt_exhibition.setString(5, exhibition.getDetails_img());
+			stmt_exhibition.setString(6, exhibition.getIntroduction());
+			stmt_exhibition.setInt(7, exhibition.getExhibition_no());
+			int exhibition_result = stmt_exhibition.executeUpdate();
+
+			stmt_location = conn.prepareStatement(sql_location);
+			stmt_location.setString(1, exhibition.getLoc());
+			stmt_location.setString(2, exhibition.getPlace());
+			stmt_location.setString(3, exhibition.getDetails_place());
+			stmt_location.setInt(4, exhibition.getLoc_no());
+			int location_result = stmt_location.executeUpdate();
+
+			stmt_price = conn.prepareStatement(sql_price);
+			stmt_price.setInt(1, exhibition.getPrice_adult());
+			stmt_price.setInt(2, exhibition.getPrice_student());
+			stmt_price.setInt(3, exhibition.getPrice_baby());
+			stmt_price.setInt(4, exhibition.getPrice_no());
+			int price_result = stmt_price.executeUpdate();
+			
+			System.out.println("exhibition.getPrice_no()" + exhibition.getPrice_no());
+			System.out.println("exhibition.getLoc_no()" + exhibition.getLoc_no());
+			System.out.println("exhibition.getExhibition_no():" + exhibition.getExhibition_no() );
+			
 			//update가 성공되면 1리턴, 실패시 0리턴
+			//exhibition, price, location 전부 성공해야 성공한 것
+			int result = 0;
+			if (exhibition_result==1 && price_result==1 && location_result==1){
+				result=1;
+			}
+			System.out.println("DAO - update() 결과: " + result);
+			return exhibition.getExhibition_no();
+		}catch (SQLException e) {
+			conn.rollback();  // Roll back transaction in case of error
+			throw e;
 		}finally {
-			JdbcUtil.close(stmt);
+			JdbcUtil.close(stmt_price);
+			JdbcUtil.close(stmt_location);
+			JdbcUtil.close(stmt_exhibition);
 		}
 	}
 
 	// 전시회 삭제
 	public int delete(Connection conn, int no) throws SQLException {
+		
+		System.out.println("ExhibitionDAO-delete() 진입");
+		
 		String sql = "delete from exhibition where exhibition_no=?";
 		PreparedStatement stmt = null;
 		try {
@@ -180,16 +249,19 @@ public class ExhibitionDAO {
 	} //selectCount();
 
 
-	//지역만 눌렀을 때
+	//필터검색
+	//StringBuilder : String은 더하기 연산자를 사용할 때마다 새로운 객체를 생성하여 메모리를 할당하고 그에 따라 성능도 저하된다고한다. StringBuilder는 더하기 연산자를 사용해도 새로운 String 객체를 생성하지 않는다.
 	public List<Exhibition> filterExhibition(Connection conn, String[] locations, String yearMonth) throws NumberFormatException, SQLException {
-		StringBuilder sql = new StringBuilder( "select e.exhibition_no,e.title,e.open_date,e.end_date, e.thumbnail,e.details_img,e.introduction, " + 
+		StringBuilder sql = new StringBuilder( "SELECT e.exhibition_no,e.title,e.open_date,e.end_date, e.thumbnail,e.details_img,e.introduction, " + 
 								"p.price_no, p.price_adult, p.price_student, p.price_baby, " + 
 								"l.loc_no, l.loc, l.place, l.details_place " + 
 								"from exhibition e,price p,location l " + 
 								"where e.exhibition_no = p.exhibition_no " +  
 								"and e.PLACE = l.place ");  
+								
+								//if문을 두개로 하여 지역만 검색했을 때, 달만 검색했을 때, 지역과 달 모두 검색하였을 때 세가지 방법을 고려한 코드 
 								if (locations != null && locations.length > 0) {
-							        sql.append(" AND place IN (");
+							        sql.append(" AND loc IN (");
 							        for (int i = 0; i < locations.length; i++) {
 							            sql.append("?");
 							            if (i < locations.length - 1) {
@@ -198,6 +270,7 @@ public class ExhibitionDAO {
 							        }
 							            sql.append(")");
 							        }
+								//시작일과 종료일 둘 중 하나의 조건에 해당한다면 출력
 								if (yearMonth != null) {
 						            sql.append(" AND ((YEAR(open_date) = ? AND MONTH(open_date) = ?) "
 						            		+ "OR (YEAR(end_date) = ? AND MONTH(end_date) = ?))");
@@ -208,6 +281,7 @@ public class ExhibitionDAO {
 		try {
 			stmt = conn.prepareStatement(sql.toString());
 			
+			//location for문으로 여러개 선택 가능하게 하기
 			int index = 1;
             if (locations != null) {
                 for (String location : locations) {
@@ -215,11 +289,11 @@ public class ExhibitionDAO {
                 }
             }
             if (yearMonth != null) {
-                String[] parts = yearMonth.split("-");
-                stmt.setInt(index++, Integer.parseInt(parts[0]));  // year
-                stmt.setInt(index++, Integer.parseInt(parts[1]));  // month
-                stmt.setInt(index++, Integer.parseInt(parts[0]));  // year
-                stmt.setInt(index++, Integer.parseInt(parts[1]));  // month
+                String[] parts = yearMonth.split("-"); //"-" 기호를 기준으로 자르기
+                stmt.setInt(index++, Integer.parseInt(parts[0]));  // year //open_date의 year 
+                stmt.setInt(index++, Integer.parseInt(parts[1]));  // month //open_date의 month
+                stmt.setInt(index++, Integer.parseInt(parts[0]));  // year //end_date의 year
+                stmt.setInt(index++, Integer.parseInt(parts[1]));  // month end_date의 month
             }
             rs = stmt.executeQuery();
 

@@ -6,61 +6,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Look At !</title>
-	<style>
-		body {
-			width: 1200px;
-			margin: auto;
-		}
-		
-		div { /*레이아웃 확인하기위한 태그 추후에 삭제할 예정임  */
-			border: 1px solid #ccc;
-		}
-		
-		#header {
-			padding: 20px;
-			margin-bottom: 20px;
-		}
-		
-		#container {
-			margin: 0 50px;
-		}
-		
-		#slideShow {
-			width: 500px;
-			padding: 20px;
-			float: right;
-			margin-bottom: 20px;
-		} 
-		
-		#sidebar {
-			width: 500px;
-			heigth:800px;
-			padding: 20px;
-			float: left;
-			margin-left: 20px;
-			margin-bottom: 20px
-		}
-		
-		#newContents {
-			clear: both;
-			padding: 20px;
-			margin-bottom: 20px;
-		}
-		
-		#newContents img {
-			width: 70%;
-			margin: auto;
-		}
-		
-		#footer {
-			clear: both; /* 양쪽 플로팅 해제 */
-			padding: 20px;
-		}
-		#sidebar img {
-			width: 300px;
-		}
-		
-	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Bootstrap 4 CSS -->
+ 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Flatly 테마 CSS -->
+	<link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">     
+	<!-- CSS -->
+	<link rel="stylesheet" href="../../css/exhibition/readExhibitioncss.css" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script>
 	// JQuery 문서 준비 함수: HTML 문서가 로드된 후 실행됩니다.
@@ -116,50 +68,42 @@
 	        });
 	    });
 	}); */
-
 </script>
 </head>
 <body>
-	
-	detailData : ${detailData}
-	
-	
-	<div name="container" id="container">
-		<!-- 이 자리에는 사이트 공통 네비게이션 바가 들어가면 될 것같다. -->
-		<div id="header">
-			<h1>Look At !</h1>
-		</div> 
-		
+ <%@ include file="/view/header.jsp" %>
+<div id="wrap" class="wrap">	
+	<div class="container">
 		<!-- 전시회 포스터 -->
-		<div name="sidebar" id="sidebar">
-			<span><img src="<%=request.getContextPath() %>../../img/exhibition/${detailData.thumbnail}"/></span>		
-		</div>
+		
+			<div class="item" style="float: right;"><img src="<%=request.getContextPath() %>../../img/exhibition/${detailData.thumbnail}" style="width: 100%"/> </div>
 		
 		<!-- 가격 장소 등 출력  -->
-		<div name="slideShow" id="slideShow">
-			      <span>${detailData.title}<span>
-			      <span>${detailData.introduction}<span>
-			      <button id="want-btn" data-exhibition_no="${detailData.exhibition_no}">
-								${detailData.exhibition_no}
-				  </button>
-		 </div>
 		
+		      <div class="item"><h3 class="title">${detailData.title}</h3> </div>
+		      <br/><hr class="info-hr"/>
+		      <div class="item">PRICE ${detailData.price_adult}원 </div>
+		     <div class="item">TICKET  </div>
+		      <div class="item">${detailData.details_place} </div>
+		      <div class="item">${detailData.introduction} </div>
+		</div>
+	</div>
 		<!-- detail img 출력 -->
-		<div name="newContents" id="newContents" style ="text-align:center">
-			<span><img src="<%=request.getContextPath() %>../../img/exhibition/${detailData.details_img}"/></span>		
+		<div class="detailImg" style ="text-align:center">
+			<span><img src="<%=request.getContextPath() %>../../img/exhibition/${detailData.details_img}" style="max-width: 100%"/></span>
 		</div>
 		
 		<!-- 세션정보 받은 후 주석해제, 코드 수정 필요 -->
 		<%-- <c:if test="${AUTH_USER.id==ora.writer_id}"> --%>
-			<a href="modify.do?no=${detailData.exhibition_no}"><button type="submit" class="btn btn-primary" >수정하기</button></a>
-			<a href="delete.do?no=${detailData.exhibition_no}"><button type="submit" class="btn btn-primary" >삭제하기</button></a> 
+			<button type="button" class="btn btn-primary" onclick="location.href='modify.do?no=${detailData.exhibition_no}'">수정하기</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='delete.do?no=${detailData.exhibition_no}'">삭제하기</button>
 		<%-- </c:if> --%>
 		
 		<!-- 이 자리에는 사이트 공통 푸터가 들어가면 될 것같다. -->
-		<div name="footer" id="footer">
+		<div id="footer">
 			<h2>footer</h2>
 		</div>
-	</div>
-	
+		
+</div>
 </body>
 </html>

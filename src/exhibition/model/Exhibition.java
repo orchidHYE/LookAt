@@ -38,13 +38,35 @@ public class Exhibition {
 			this.thumbnail = thumbnail;
 			this.details_img = details_img;
 			this.introduction = introduction;
-			
+		}
 		
+		//writeExhibitionHandler에서 첨부파일 기능을 구현하는데 필요해서 만든 생성자
+		public Exhibition(String title, Date open_date, Date end_date, String thumbnail, String details_img,
+				String introduction, int price_adult, int price_student, int price_baby, String place, String loc,
+				String details_place) {
+			this.title = title;
+			this.open_date = open_date;
+			this.end_date = end_date;
+			this.thumbnail = thumbnail;
+			this.details_img = details_img;
+			this.introduction = introduction;
+			this.price_adult = price_adult;
+			this.price_student = price_student;
+			this.price_baby = price_baby;
+			this.place = place;
+			this.loc = loc;
+			this.details_place = details_place;
+		}
+		
+		
+
+		public Exhibition(String title, String thumbnail, String introduction) {
+			super();
+			this.title = title;
+			this.thumbnail = thumbnail;
+			this.introduction = introduction;
 		}
 
-		//글번호있는 생성자
-		
-		
 		//필수입력 - p638 31라인
 		public void validate(Map<String, Boolean> errors) {
 			if ( title == null || title.isEmpty()) {
@@ -109,7 +131,7 @@ public class Exhibition {
 		}
 
 		public void setTitle(String title) {
-			this.title = title;
+			this.title = title; 
 		}
 
 		public Date getOpen_date() {

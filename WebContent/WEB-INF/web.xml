@@ -27,7 +27,7 @@
         dbPass=ep123123
         validationQuery=select 1
         minIdle=3
-        maxTotal=30
+        maxTotal=100
         poolName=exhi
   </param-value>
   </context-param>
@@ -56,5 +56,11 @@
    <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+  
+  <context-param>
+    <param-name>myFilePath</param-name>
+    <param-value>/WebContent/img/exhibition</param-value>
+ </context-param>
+  
   
 </web-app>

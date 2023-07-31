@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>전시회 목록</title>
 <!-- CSS -->
-<link rel="stylesheet" href="../../css/listExhibiitonCss.css">
+<link rel="stylesheet" href="../../css/exhibition/listExhibitioncss.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <%-- <script>
 $(document).ready(function() {
@@ -47,37 +47,23 @@ $(document).ready(function() {
 </script> --%>
 </head>
 <body>
-
-<br/>
-${exhibitionPage}
-
-<div id="exhibitionContainer">
-<c:forEach var="item" items="${exhibitionPage.content}">
-  <c:set var="_count" value="${_count+1}" />
-	  <tr>
-	    <td>
-	      <a href="read.do?no=${item.exhibition_no}"><img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}"/></a>
-	    </td>   
-	  </tr>
-  <c:if test="${_count % 3 == 0}">
-    	<br>
-  </c:if>
-  <c:if test="${_count == 9}">
-  </c:if>
-</c:forEach>
+ <%@ include file="/view/header.jsp" %>
+<div class="title">
+	<h1>EXHIBITION</h1>
 </div>
+<div class="wrap">
+	<div class="exhibitionContainer">
+		<c:forEach var="item" items="${exhibitionPage.content}">
+			<a href="read.do?no=${item.exhibition_no}">
+				<div class="item" width="1280px">
+					<img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}" style="width: 300px; height:418px;"/>
+				</div>
+			</a>
+		</c:forEach>
+	</div>
 
-
-	
-	
- 		
-	<%-- <div>총 ${exhibitionPage.total}건의 검색결과가 있습니다.</div>
-	<c:forEach var="result" items="${exhibitionPage.content}">
-		<a href="read.do?no=${result.exhibition_no}"><img src="<%=request.getContextPath() %>/img/exhibition/${result.thumbnail}"></a>
-	</c:forEach>		 --%>
- 	<a href="write.do" class="btn btn-secondary btn float-right">글쓰기</a><br/>
- 	
- 		<%-- <c:if>이용하여 노출여부가 달라진다 --%>
+	<div class="pagenation">
+	<a href="write.do" class="btn btn-secondary btn float-right">글쓰기</a><br/>
  		<c:if test="${exhibitionPage.startPage > 5}">
  			<a href="list.do?pageNo=${exhibitionPage.startPage-5}"> &lt;&lt;pre </a>
  		</c:if>
@@ -91,10 +77,7 @@ ${exhibitionPage}
  		<c:if test="${exhibitionPage.endPage < exhibitionPage.totalPages}">
  			<a href="list.do?pageNo=${exhibitionPage.startPage+5}"> next&gt;&gt; </a>
  		</c:if>
- 		
- 		
- </div>
-
-
+ 	</div>
+</div>
 </body>
 </html>

@@ -21,27 +21,18 @@ public class ModifyExhibitionService {
 		public void modify(Exhibition modReq) throws PermissionDeniedException, ExhibitionNotFoundException {
 			
 			System.out.println("ModifyExhibitionService-modify() 진입");
+			System.out.println(modReq.getExhibition_no());
 			
 			Connection conn = null;
 			try {
 				conn = ConnectionProvider.getConnection();
 				conn.setAutoCommit(false);
-				
-				//1.article테이블에 update하기전 해당글번호 가져오기
-				Exhibition exhibition = exhibitionDAO.getDetail(conn, modReq.getExhibition_no());
-				if(exhibition==null) {
-					throw new ExhibitionNotFoundException();
+				int modifyResult = exhibitionDAO.update(conn, modReq);
+				if (modifyResult != 1) {
+					conn.rollback();
+				}else {
+					conn.commit();
 				}
-				
-				//1.수정가능여부체크
-				//if(!canModify("admin", )) { //수정불가하면
-				//	throw new PermissionDeniedException();
-				//}
-				
-				//1.article테이블에 update하는 메서드호출-p668 31라인
-				exhibitionDAO.update(conn, modReq.getExhibition_no(), modReq.getTitle());
-				
-				conn.commit();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				JdbcUtil.rollback(conn);
@@ -49,9 +40,8 @@ public class ModifyExhibitionService {
 			}finally {
 				JdbcUtil.close(conn);
 			}
-			
 		}
-		
+
 		//수정가능여부체크-p668 47라인
 		// 수정하고자하는 user의 id가 글작성자id와 일치하는 비교하여 동일하면 수정가능     
 		//리턴 boolean - 수정할 수 있으면 true반환, 불가하면 false반환

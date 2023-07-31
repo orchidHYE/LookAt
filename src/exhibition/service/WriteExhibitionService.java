@@ -12,7 +12,6 @@ import exhibition.model.Exhibition;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import mvc.command.CommandHandler;
-
 public class WriteExhibitionService {
 
 	private ExhibitionDAO exhibitionDAO = new ExhibitionDAO();
@@ -36,12 +35,10 @@ public class WriteExhibitionService {
 			return savedContentRow;
 		} catch (SQLException e) {
 			e.printStackTrace();
-
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
-
 			JdbcUtil.rollback(conn);
 			throw e;
 		} finally {

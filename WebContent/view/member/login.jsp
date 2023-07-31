@@ -82,7 +82,7 @@
 	              console.log(res);
 	              var id = res.id;
 	              scop:'profile_nickname, profile_image, account_email, gender, age_range, birthday';
-	              location.href="index.jsp";
+	              location.href="slider.jsp";
 	        }
 	          })
 	          console.log(authObj);
