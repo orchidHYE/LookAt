@@ -284,8 +284,9 @@ public class ExhibitionDAO {
 			//location for문으로 여러개 선택 가능하게 하기
 			int index = 1;
             if (locations != null) {
-                for (String location : locations) {
-                    stmt.setString(index++, location);
+            	for(int i =0; i<=locations.length; i++) {
+                    stmt.setString(i+1, locations[i]);
+                    System.out.println(locations[i]);
                 }
             }
             if (yearMonth != null) {
@@ -307,6 +308,37 @@ public class ExhibitionDAO {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(stmt);
 		}
-		} 
+		}
+
+
+
+
+	public List<Exhibition> filterExhibition01(Connection conn, String location, String open_date, String end_date) throws SQLException {
+		String sql = "SELECT e.exhibition_no,e.title,e.open_date,e.end_date, e.thumbnail,e.details_img,e.introduction, " + 
+				"p.price_no, p.price_adult, p.price_student, p.price_baby, " + 
+				"l.loc_no, l.loc, l.place, l.details_place " + 
+				"from exhibition e,price p,location l " + 
+				"where e.exhibition_no = p.exhibition_no " +  
+				"and e.PLACE = l.place "+
+				"and loc=?  and month(open_date) >= ? and month(end_date) <= ?";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Exhibition> result = new ArrayList<Exhibition>();
+		try {
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, location);
+		stmt.setString(2, open_date);
+		stmt.setString(3, end_date);
 		
+		rs = stmt.executeQuery();
+		while(rs.next()) {
+			result.add(convertExhibition(rs)); 
+		}
+		return result;
+	} finally { // 5.자원반납
+		JdbcUtil.close(rs);
+		JdbcUtil.close(stmt);
+	}
+	}
+	
 }

@@ -45,14 +45,15 @@ public class SearchExhibitionHandler implements CommandHandler {
 	//결과 처리하기
 	private String processSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// 파라미터받기
-		String[] locations = request.getParameterValues("locations");
-		String yearMonth = request.getParameter("yearMonth");
+		String location = request.getParameter("location");
+		String [] yearMonth = request.getParameterValues("yearMonth");
 
-		System.out.println("locations" + locations);
-		System.out.println("yearMonth" + yearMonth);
+		System.out.println("location" + location);
+		System.out.println("yearMonth0" + yearMonth[0]);
+		System.out.println("yearMonth1" + yearMonth[1]);
 
 		// 비즈니스로직 처리
-		List<Exhibition> filterSearchResult = searchExhibitionService.filterSearch(locations, yearMonth);
+		List<Exhibition> filterSearchResult = searchExhibitionService.filterSearch(location, yearMonth[0], yearMonth[1]);
 
 		// Model
 		request.setAttribute("filterSearchResult", filterSearchResult);

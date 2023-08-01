@@ -15,7 +15,6 @@
 <link href="<%=request.getContextPath() %>/css/header_css.css" rel="stylesheet" >
 </head>
 <body>
-<script src="reviewList.js"></script>
 
 <div class="Menu">
 
@@ -33,12 +32,18 @@
     <h2 style="text-align: center; position: relative; top: 75px;"><a href="#"></a></h2>
     <hr style="position: relative; top:120px; border: solid 1px black;">
     <ul class="nav_mobile">
-      <li><a href="#">SEARCH</a></li>
-      <li><a href="${cPath}/exhibition/list.do">MEET OTHERS</a></li>
+      <li><a href="${cPath}/exhibition/list.do">SEARCH</a></li>
+      <li><a href="#">MEET OTHERS</a></li>
       <li><a href="#">MY EXHIBITION</a></li>
       <li><a href="${cPath}/myPageMain.do">MY PAGE</a></li>
       <li><a href="#">Q & A</a></li>
       <li><a href="${cPath}/noticeList.do">NOTICE</a></li>
+      <c:if test="${empty AUTH_USER.id}">
+      <li><a href="${cPath}/login.do">LOGIN</a></li>
+      </c:if>
+      <c:if test="${!empty AUTH_USER.id}">
+      <li><a href="${cPath}/logout.do">LOGOUT</a></li>
+      </c:if>
     </ul>
    </div>
    </div>     
@@ -58,7 +63,6 @@
    
 
 <div class="box2">
-   <div class="headerBox">
    </div>
 
    </div>

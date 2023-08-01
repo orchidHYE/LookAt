@@ -14,12 +14,12 @@ public class SearchExhibitionService {
 
 	private ExhibitionDAO exhibitionDAO = new ExhibitionDAO();
 	
-	public List<Exhibition> filterSearch (String[] locations, String yearMonth) throws ExhibitionNotFoundException {
+	public List<Exhibition> filterSearch (String location, String open_date, String end_date) throws ExhibitionNotFoundException {
 		Connection conn = null;
 		List<Exhibition> result= null;
 		try {
 			conn = ConnectionProvider.getConnection();
-			result = exhibitionDAO.filterExhibition(conn, locations, yearMonth);
+			result = exhibitionDAO.filterExhibition01(conn, location, open_date, end_date);
 			
 			if (result == null) {
 				throw new ExhibitionNotFoundException();

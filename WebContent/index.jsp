@@ -12,6 +12,7 @@
 <body>
  <%@ include file="/view/header.jsp" %>
 <div name="wrap" id="wrap" class="wrap">
+
     <!-- 인기 전시회 포스터  -->
     <!-- Swiper -->
     <div class="swiper mySwiper">
