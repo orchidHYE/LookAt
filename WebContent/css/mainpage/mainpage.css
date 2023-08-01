@@ -67,3 +67,7 @@
     stroke-dasharray: 125.6;
     transform: rotate(-90deg);
 }
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}

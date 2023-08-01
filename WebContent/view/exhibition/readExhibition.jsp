@@ -9,15 +9,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Bootstrap 4 CSS -->
  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<!-- Flatly 테마 CSS -->
-	<link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">     
 	<!-- CSS -->
 	<link rel="stylesheet" href="../../css/exhibition/readExhibition.css" type="text/css">
 	<!-- Font -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&family=Noto+Sans+KR&display=swap" rel="stylesheet">
 </head>
 <body>
  <%@ include file="/view/header.jsp" %>
@@ -26,14 +23,14 @@
 		<!-- 전시회 포스터 -->
 		<div class="item"><img class="item" src="<%=request.getContextPath() %>../../img/exhibition/${detailData.thumbnail}" style="width: 430px; height:600px;"/></div>
 			<!-- 가격 장소 등 출력  -->
-		<div id="itemTitle" class="item">${detailData.title}</div>
+		<div id="itemTitle" class="item"><h1>${detailData.title}</h1></div>
 		<div id="itemPrice" class="item">PRICE ${detailData.price_adult}원</div>
 		<div id="itemPlace" class="item">${detailData.details_place} </div>
 		<div id="itemPlace" class="item"><button id="itemBtn" type="button">BUY NOW</button></div>
 	</div>
 	<!-- detail img 출력 -->
 	<div class="detailImg" style ="text-align:center">
-		<span><img src="<%=request.getContextPath() %>../../img/exhibition/${detailData.details_img}" style="width: 1000px;"/></span>
+		<span><img src="<%=request.getContextPath() %>../../img/exhibition/${detailData.details_img}" style="width: 700px;"/></span>
 	</div>
 	<!-- 세션정보 받은 후 주석해제, 코드 수정 필요 -->
 	<%-- <c:if test="${AUTH_USER.id==ora.writer_id}"> --%>

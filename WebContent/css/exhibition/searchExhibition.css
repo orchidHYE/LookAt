@@ -17,15 +17,12 @@
 	grid-row-end: 3;
 }
 
-. btn { /* 버튼 투명도 */
-	opacity: 0;
+input[type="radio"]:checked + span > label {
+	font-weight: bold; 
+	color: black;
 }
 
- .btn > label {
-	padding: 5px 10px; border: 1px solid #ccc; border-radius: 3px;
-}
-
-input[type="radio"]:checked + label {
+input[type="checkbox"]:checked + span > label {
 	font-weight: bold; 
 	color: black;
 }
@@ -91,4 +88,100 @@ h1, h3 {
 
 h3 {
 	margin-top: 50px;
+}
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+#radio_btn_1 {
+	display: none;
+}
+#radio_btn_2 {
+	display: none;
+}
+#radio_btn_3 {
+	display: none;
+}
+#radio_btn_4 {
+	display: none;
+}
+#radio_btn_5 {
+	display: none;
+}
+#radio_btn_6 {
+	display: none;
+}
+#radio_btn_7 {
+	display: none;
+}
+#radio_btn_8 {
+	display: none;
+}
+#radio_btn_9 {
+	display: none;
+}
+#radio_btn_10 {
+	display: none;
+}
+#radio_btn_11 {
+	display: none;
+}
+#radio_btn_12 {
+	display: none;
+}
+#radio_btn_13 {
+	display: none;
+}
+#radio_btn_14 {
+	display: none;
+}
+#radio_btn_15 {
+	display: none;
+}
+#radio_btn_16 {
+	display: none;
+}
+#radio_btn_17 {
+	display: none;
+}
+#radio_btn_18 {
+	display: none;
+}
+#radio_btn_19 {
+	display: none;
+}
+#radio_btn_20 {
+	display: none;
+}
+#radio_btn_21 {
+	display: none;
+}
+#radio_btn_22 {
+	display: none;
+}
+#radio_btn_23 {
+	display: none;
+}
+#radio_btn_24 {
+	display: none;
+}
+#radio_btn_25 {
+	display: none;
+}
+#radio_btn_26 {
+	display: none;
+	margin-right: 10px;
+}
+#radio_btn_27 {
+	display: none;
+	margin-right: 10px;
+}
+#radio_btn_28 {
+	display: none;
+	margin-right: 10px; 
+}
+
+.lableMargin {
+	margin-right: 10px; 
 }

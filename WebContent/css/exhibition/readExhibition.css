@@ -47,3 +47,7 @@
 .detailImg {
 	margin-top: 200px;
 }
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
