@@ -16,6 +16,11 @@
 <body>
  <%@ include file="/view/header.jsp" %>
 <div name="wrap" id="wrap" class="wrap">
+<%
+
+	response.sendRedirect("/index.do");
+
+%>
 
     <!-- 인기 전시회 포스터  -->
     <!-- Swiper -->
@@ -24,7 +29,7 @@
         <c:forEach var="item" items="${exhibitionPage.content}">
             <div class="swiper-slide">
    			    <a href="/exhibition/read.do?no=${item.exhibition_no}">
-                <img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}"/>
+                <img src="<%=request.getContextPath() %>/view/image/${item.thumbnail}"/>
                 </a>
             </div>
          </c:forEach>
@@ -43,7 +48,7 @@
 			<c:forEach var="item" items="${exhibitionPage.content}">
 				<a href="/exhibition/read.do?no=${item.exhibition_no}">
 					<div class="item" width="1280px">
-						<img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}" style="width: 300px; height:418px;"/>
+						<img src="<%=request.getContextPath() %>/view/image/${item.thumbnail}" style="width: 300px; height:418px;"/>
 					</div>
 				</a>
 			</c:forEach>
@@ -57,5 +62,6 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="/js/mainpage/swiper.js"></script>
+
 </body>
 </html>

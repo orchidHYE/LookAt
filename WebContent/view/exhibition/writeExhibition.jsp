@@ -107,6 +107,7 @@ function setThumbnail(event, containerId) {
 }
 </script>
       
+	<%@ include file="../footer.jsp" %> 
 
 </body>
 </html>

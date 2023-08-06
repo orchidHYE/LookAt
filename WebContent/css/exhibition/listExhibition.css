@@ -18,9 +18,17 @@
 	padding: 40px;
 }
 
- .pagenation {
-	clear: both;
-	text-align: center;
+.pagenation {
+    bottom:-77rem;
+    left: 87rem;
+    clear: both;
+    text-align: center;
+	font-size: 20px;
+	
+}
+
+.pno {
+	margin-right:10px;
 }
 
 .title {
@@ -126,6 +134,8 @@ h1, h3 {
 h3 {
 	margin-top: 50px;
 }
+
+
 
 #radio_btn_1 {
 	display: none;

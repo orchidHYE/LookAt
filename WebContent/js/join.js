@@ -26,12 +26,8 @@
   var erroremail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
   
   //id null or 유효성에 안 맞는 경우
-  member_id.addEventListener("change", function() {
-	  if (member_id.value === "") {
-	    member_id.style.borderColor = "red";
-	    id.style.display = "block";
-	    member_id.focus();
-	  } else if (!errorid.test(member_id.value)) {
+  member_id.addEventListener("keyup", function() {
+	  if (!errorid.test(member_id.value)) {
 	    member_id.style.borderColor = "red";
 	    id.style.display = "block";
 	    member_id.focus();
@@ -43,7 +39,7 @@
 	  });
   
   //pw null or 유효성에 안 맞는 경우
-  member_pw.addEventListener("change", function() {
+  member_pw.addEventListener("keyup", function() {
 	  if (member_pw.value === "") {
 			member_pw.style.borderColor = "red";
 			pw.style.display = "block";
@@ -59,7 +55,7 @@
 		return false;
 	  });
   //pw null or 비번 확인이랑 다른 경우
-  replay_pw.addEventListener("change", function() {
+  replay_pw.addEventListener("keyup", function() {
 	    if (replay_pw.value === "") {
 	        replay_pw.style.borderColor = "red";
 	        repw.style.display = "block";
@@ -76,7 +72,7 @@
 	});
   
   //name이 null이거나 조건에 맞지 않는 경우
-  member_Name.addEventListener("change", function() {
+  member_Name.addEventListener("keyup", function() {
 	    if (member_Name.value === "") {
 	    	member_Name.style.borderColor = "red";
 	        name.style.display = "block";
@@ -93,7 +89,7 @@
 	});
   
   //생년월일이 null이거나 조건에 맞지 않는 경우
-  member_date.addEventListener("change", function() {
+  member_date.addEventListener("keyup", function() {
 	    if (member_date.value === "") {
 	    	member_date.style.borderColor = "red";
 	        date.style.display = "block";
@@ -110,7 +106,7 @@
 	});
   
   //전화번호가 null이거나 조건에 맞지 않는 경우
-  member_tel.addEventListener("change", function() {
+  member_tel.addEventListener("keyup", function() {
 	    if (member_tel.value === "") {
 	    	member_tel.style.borderColor = "red";
 	        tel.style.display = "block";
@@ -126,7 +122,7 @@
 	    return false;
 	});
   //이메일이 null이거나 조건에 맞지 않는 경우
-  member_email.addEventListener("change", function() {
+  member_email.addEventListener("keyup", function() {
 	    if (member_email.value === "") {
 	    	member_email.style.borderColor = "red";
 	        email.style.display = "block";
@@ -183,9 +179,6 @@
 	  }
 	  
 	});
-  
-  
+		
 });
   
-  
-

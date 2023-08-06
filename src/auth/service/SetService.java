@@ -8,10 +8,11 @@ import jdbc.connection.ConnectionProvider;
 import member.dao.MemberDao;
 import member.model.Member;
 
+//login시 사용
 public class SetService {
 	private MemberDao memberDao = new MemberDao();
 	
-	public auth.service.User login(String id, String password) {
+	public User login(String id, String password) {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
@@ -23,7 +24,11 @@ public class SetService {
 			if(!member.matchPassword(password)) {
 				throw new LoginFailException();
 			}
-			return new auth.service.User(member.getMember_id(), member.getMember_name());
+			
+			if(member.getQuit_Y()!=null) {
+				throw new LoginFailException();
+			}
+			return new User(member.getMember_id(), member.getMember_name());
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
 		}finally {

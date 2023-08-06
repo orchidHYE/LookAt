@@ -33,6 +33,7 @@ public class LoginHandler implements CommandHandler{
 	
 	
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		req.setAttribute("errorMessage", "");
 		return FORM_VIEW;
 	}
 	
@@ -54,9 +55,12 @@ public class LoginHandler implements CommandHandler{
 		}
 		
 		//에러가 있으면 로그인폼페이지로 이동
-		if(!errors.isEmpty()) {
-			return req.getContextPath() + FORM_VIEW;
-		}
+		if (!errors.isEmpty()) {
+	        String errorMessage = "아이디 또는 비밀번호가 일치하지 않습니다.";
+	        System.out.println(errorMessage);
+	        req.setAttribute("errorMessage", errorMessage);
+	        return FORM_VIEW;
+	    }
 		
 		//비즈니스로직
 		try {
@@ -65,10 +69,10 @@ public class LoginHandler implements CommandHandler{
 			HttpSession session = req.getSession();
 			session.setAttribute("AUTH_USER", user);
 			
-			res.sendRedirect(req.getContextPath() + "/index.jsp");
+			res.sendRedirect(req.getContextPath() + "/index.do");
 			return null;
 		}catch(LoginFailException e) {
-			errors.put("idpwNOTmatch", Boolean.TRUE);
+	        req.setAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			return req.getContextPath() +  FORM_VIEW;
 		}
 	

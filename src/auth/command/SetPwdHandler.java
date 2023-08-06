@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import auth.service.LoginFailException;
 import auth.service.LostPwdService;
+import auth.service.User;
 import auth.service.UserPwd;
 import mvc.command.CommandHandler;
 
@@ -49,6 +50,7 @@ public class SetPwdHandler implements CommandHandler {
         if(membertel == null || membertel.isEmpty()) {
         	errors.put("tel", Boolean.TRUE);
         }
+      
         
 
         if(!errors.isEmpty()) {
@@ -58,12 +60,14 @@ public class SetPwdHandler implements CommandHandler {
         try {
             // 데이터베이스에서 회원 정보 검색
             UserPwd user = pwdService.lostPwd(membertel); // MemberDao에서 해당 회원 검색하는 메서드 사용
-           req.setAttribute("user", user); //jsp에서 불러옴
+            req.setAttribute("user", user); //jsp로 보냄
             
             if(user == null) {
             	errors.put("nameOrTelNotMatch", Boolean.TRUE);
             	return req.getContextPath()+FORM_VIEW;
             }
+            
+
             
             return req.getContextPath()+"/view/member/setPwd.jsp";
             

@@ -38,6 +38,8 @@ public class JoinHandler implements CommandHandler {
     //회원가입처리
     private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
     	System.out.println("processSubmit진입");
+    	String member_id = req.getParameter("member_id");
+    	System.out.println(member_id);
         JoinRequset joinReq = new JoinRequset();
         joinReq.setMember_id(req.getParameter("member_id"));
         joinReq.setMember_name(req.getParameter("member_Name"));
@@ -48,9 +50,9 @@ public class JoinHandler implements CommandHandler {
         joinReq.setMember_email(req.getParameter("member_email"));
         System.out.println("JoinHandler-processSubmit진입 joinReq="+joinReq);
         
+        
         Map<String, Boolean> errors = new HashMap<>();
         req.setAttribute("errors", errors);
-        
         //필수입력(유효성)검사
         joinReq.validate(errors);
 

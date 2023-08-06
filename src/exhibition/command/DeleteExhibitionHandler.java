@@ -16,7 +16,8 @@ public class DeleteExhibitionHandler implements CommandHandler {
 		System.out.println("DeleteExhibitionHandler-process() 진입");
 		
 		//1.파라미터받기
-		int no = Integer.parseInt(request.getParameter("no"));//삭제하고 싶은 글번호
+		int no = Integer.parseInt(request.getParameter("exhibitions"));//삭제하고 싶은 글번호
+		System.out.println(no);
 		
 		//2.비즈니스로직<->Service<->DAO<->DB
 		deleteExhibitionService.delete(no);

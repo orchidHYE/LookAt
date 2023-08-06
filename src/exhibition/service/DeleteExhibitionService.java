@@ -24,16 +24,24 @@ public class DeleteExhibitionService  {
 			conn.setAutoCommit(false);
 			
 			//1.article테이블에 delete하기전 해당글번호 가져오기
-			Exhibition exhibition = exhibitionDAO.getDetail(conn, no);
+			Exhibition exhibition = exhibitionDAO.getInfo(conn, no);
+			System.out.println("exhibition ="+exhibition);
 			if(exhibition==null) {
 				throw new ExhibitionNotFoundException();
 			}
 			
 			//2.article테이블에 delete하는 메서드호출
-			int deleteResult = exhibitionDAO.delete(conn, no);
+			int deleteLoc = exhibitionDAO.deleteLoc(conn, exhibition.getPlace());
+			int deletePrice = exhibitionDAO.deletePrice(conn, exhibition.getExhibition_no());
+			int deleteExhibition = exhibitionDAO.deleteExhibition(conn, exhibition.getExhibition_no());
+			int result = -1;
+			
+			if (deleteLoc==1 && deletePrice==1 && deleteExhibition==1){
+				result=1;
+			}
 			
 			conn.commit();
-			return deleteResult;
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			JdbcUtil.rollback(conn);

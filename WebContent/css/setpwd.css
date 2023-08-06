@@ -32,7 +32,7 @@
 	position: relative;
 }
 
-.setpwd {
+.setBtn {
 	text-align: center;
 	margin: auto;
 }
@@ -46,4 +46,17 @@
 	box-shadow: 2px 2px 2px 	#dcdcdc;
 	margin-top : 30px;
 	color : black;
+}
+
+.spanstyle{
+	display: none;
+	color: #aaaaaa;
+	font-style: italic;
+	font-size: 10pt;
+	position: absolute;
+	text-align: left;
+	margin-left: 30px; /* 왼쪽 정렬 */
+}
+.error {
+  display: block; 
 }

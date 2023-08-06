@@ -13,7 +13,7 @@
 	     
 </head>
 <body>
-
+<%@ include file="/view/header.jsp" %>
  <div class="container">
     <!-- page title -->
 	<h2  class="mt-5 mb-4 text-center">수정</h2>
@@ -104,6 +104,7 @@ function setThumbnail(event, containerId) {
     reader.readAsDataURL(event.target.files[0]);
 }
 </script>
+ 	<%@ include file="../footer.jsp" %> 
  
 </body>
 </html>

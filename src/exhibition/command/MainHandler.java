@@ -9,7 +9,7 @@ import mvc.command.CommandHandler;
 
 public class MainHandler implements CommandHandler {
 
-	private String FOEM_VIEW = "/index.jsp";
+	private String FOEM_VIEW = "/view/index02.jsp";
 	private ListExhibitionService listExhibitionService = new ListExhibitionService();
 	
 	@Override

@@ -3,7 +3,6 @@ package exhibition.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
 import exhibition.dao.ExhibitionDAO;
 import exhibition.dao.ExhibitionPage;
 import exhibition.model.Exhibition;
@@ -31,7 +30,6 @@ public class ListExhibitionService {
 			//				  int size //한페이지당 츨력할 게시글 수 
 			//				  List<Article> content //article 목록
 			ExhibitionPage ep = new ExhibitionPage(total, pageNum, size, content);
-			System.out.println("ListExhibitionService - getExhibitionPage()의 결과 ep= " + ep );
 			return ep;
 			
 		} catch (SQLException e) {
@@ -40,5 +38,26 @@ public class ListExhibitionService {
 			JdbcUtil.close(conn);
 		}
 	 }
+	 public ExhibitionPage getExhibitionName(int pageNum, String name) {
+		int size = 3; 
+
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+
+			int total = exhibitionDAO.selectCountByname(conn, name);
+			List<Exhibition> content = exhibitionDAO.getListByName(conn, name, (pageNum-1) * size, size);
+			System.out.println("total = "+total);
+			ExhibitionPage ep = new ExhibitionPage(total, pageNum, size, content);
+			return ep;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	 }
+
+
 
 }

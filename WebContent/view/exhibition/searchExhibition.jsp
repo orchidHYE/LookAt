@@ -152,11 +152,12 @@
 		</div>	
 	</form>
 <!-- wrap div 끝 -->
+	<div id="totalContent"><h3>총 ${exhibitionPage.total}건의 검색결과가 있습니다.</h3></div>
 	<div class="exhibitionContainer">
 			<c:forEach var="item" items="${filterSearchResult}">
 				<a href="read.do?no=${item.exhibition_no}">
 					<div class="exhibitionContainerItem" width="1280px">
-						<img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}" style="width: 300px; height:418px;"/>
+						<img src="<%=request.getContextPath() %>/view/image/${item.thumbnail}" style="width: 300px; height:418px;"/>	
 					</div>
 				</a>
 			</c:forEach>
@@ -178,5 +179,7 @@
 	 		</c:if>
 	 	</div>
 </div>  
+	<%@ include file="../footer.jsp" %> 
+
 </body>
 </html>

@@ -23,7 +23,7 @@
 			<div id="textBox" class="item">
 				<h1>내가 보고싶은</h1>
 				<h1>전시회만</h1>
-				<h1>보자!</h1>
+				<h1>보자!</h1><br/>
 				<h3>전시회를 찾아보세요!</h3>
 			</div>
 				<div id="itemLoc" class="item">
@@ -159,14 +159,13 @@
 		<c:forEach var="item" items="${exhibitionPage.content}">
 			<a href="read.do?no=${item.exhibition_no}">
 				<div class="exhibitionItem" width="1280px">
-					<img src="<%=request.getContextPath() %>/img/exhibition/${item.thumbnail}" style="width: 300px; height:418px;"/>
+					<img id="thumbnail" src="<%=request.getContextPath() %>/view/image/${item.thumbnail}" style="width: 300px; height:418px; onmouseover="onHover();"/>
 				</div>
 			</a>
 		</c:forEach>
 	</div>
 
 	<div class="pagenation">
-	<a href="write.do" class="btn btn-secondary btn float-right">글쓰기</a><br/>
  		<c:if test="${exhibitionPage.startPage > 5}">
  			<a href="list.do?pageNo=${exhibitionPage.startPage-5}"> &lt;&lt;pre </a>
  		</c:if>
@@ -174,12 +173,14 @@
  		<%-- <c:forEach></c:forEach>1 2 3 4 5 6 7 8 9 10 --%>
  		<%--for(int i = 1; i<=10; i++) ${syso(i)} --%>
 	 		<c:forEach var="pNo" begin="${exhibitionPage.startPage}"  end="${exhibitionPage.endPage}" step="1">
-					<a href="list.do?pageNo=${pNo}">${pNo}</a> 
+					<a class="pno" href="list.do?pageNo=${pNo}">${pNo}</a> 
 	 		</c:forEach>
  		<c:if test="${exhibitionPage.endPage < exhibitionPage.totalPages}">
  			<a href="list.do?pageNo=${exhibitionPage.startPage+5}"> next&gt;&gt; </a>
  		</c:if>
  	</div>
 </div>
+	<%@ include file="../footer.jsp" %> 
+
 </body>
 </html>

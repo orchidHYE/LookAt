@@ -28,10 +28,10 @@ public class ModifyExhibitionService {
 				conn = ConnectionProvider.getConnection();
 				conn.setAutoCommit(false);
 				int modifyResult = exhibitionDAO.update(conn, modReq);
-				if (modifyResult != 1) {
-					conn.rollback();
-				}else {
+				if (modifyResult == 1) {
 					conn.commit();
+				}else {
+					conn.rollback();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

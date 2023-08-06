@@ -44,10 +44,37 @@
 	width: 580px;
 }
 
+#itemBtn2 {
+	background-color: white;
+	border: 1px solid;
+	color: black;
+	cursor: pointer;
+	padding: 15px;
+	width: 580px;
+}
+
+
+
+
 .detailImg {
 	margin-top: 200px;
 }
 
 * {
 	font-family: 'Noto Sans KR', sans-serif;
+}
+
+#adminBtn {
+	text-align: center;
+	margin : auto;
+	position: relative;
+}
+
+#btn1 {
+	text-align: center;
+	margin : auto;
+}
+#btn2 {
+	text-align: center;
+	margin : auto;
 }

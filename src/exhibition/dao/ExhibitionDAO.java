@@ -1,13 +1,66 @@
 package exhibition.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import exhibition.model.Exhibition;
+import exhibition.model.ExhibitionJoin;
 import jdbc.JdbcUtil;
 
 public class ExhibitionDAO {
+
+	public int selectCountByname(Connection conn, String name) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM exhibition " +
+							  "where title like concat('%',?,'%') ";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			int totalCNT = 0; 			
+			if (rs.next()) {
+				totalCNT = rs.getInt(1);
+			}
+			System.out.println("totalCNT = "+totalCNT);
+			return totalCNT;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		
+	}
+
+	public List<Exhibition> getListByName(Connection conn, String name, int startRow, int size) throws SQLException {
+			String sql = "select e.exhibition_no,e.title,e.open_date,e.end_date,e.PLACE,e.thumbnail,e.details_img,e.introduction, p.price_no, p.price_adult, p.price_student, p.price_baby, l.loc_no, l.loc, l.details_place " +
+								  "from exhibition e,price p,location l " +
+								  "where e.exhibition_no = p.exhibition_no " +
+								  "and e.PLACE = l.place " +
+								  "and e.title like concat('%',?,'%' )" +
+								  "order by exhibition_no desc LIMIT ?,?";
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, name);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, size);
+				rs = pstmt.executeQuery();
+				List<Exhibition> result = new ArrayList<Exhibition>();
+				while (rs.next()) {
+					result.add(convertExhibition(rs)); 
+				} 
+				return result;
+			} finally { // 5.자원반납
+				JdbcUtil.close(rs);
+				JdbcUtil.close(pstmt);
+			}
+		}
 
 	// 전시회 등록
 	public int insert(Connection conn, Exhibition exhibition) throws SQLException {
@@ -126,6 +179,44 @@ public class ExhibitionDAO {
 			JdbcUtil.close(stmt);
 		}
 	}
+	
+	public ExhibitionJoin getDetail2(Connection conn, int no) throws SQLException {
+		String sql ="select e.exhibition_no,e.title,e.open_date,e.end_date,e.PLACE,e.thumbnail,e.details_img,e.introduction, p.price_adult, p.price_student, p.price_baby, l.details_place " + 
+				"from exhibition e,price p,location l " + 
+				"where e.exhibition_no = p.exhibition_no " + 
+				"and e.PLACE = l.place " + 
+				"and e.exhibition_no=?";
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			try {
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1,no);
+				rs = stmt.executeQuery();
+			ExhibitionJoin detailData = null;
+			if (rs.next()) {
+				detailData = new ExhibitionJoin();
+				detailData.setExhibition_no(rs.getInt("exhibition_no"));
+				detailData.setTitle(rs.getString("title"));
+				detailData.setOpen_date(rs.getDate("open_date"));
+				detailData.setEnd_date(rs.getDate("end_date"));
+				detailData.setPlace(rs.getString("place"));
+				detailData.setThumbnail(rs.getString("thumbnail"));
+				detailData.setDetails_img(rs.getString("details_img"));
+				detailData.setIntroduction(rs.getString("introduction"));
+				detailData.setPrice_adult(rs.getInt("price_adult"));
+				detailData.setPrice_student(rs.getInt("price_student"));
+				detailData.setPrice_baby(rs.getInt("price_baby"));
+				detailData.setDetails_place(rs.getString("details_place"));
+			
+			//콘솔출력
+			System.out.println("ExhibitionDAO - getDetail() ExhibitionJoin detailData= " + detailData);
+			}
+			return detailData;
+			} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
+			}
+	}
 
 	// 전시회 수정
 	public int update(Connection conn, Exhibition exhibition) throws SQLException {
@@ -141,6 +232,20 @@ public class ExhibitionDAO {
 		PreparedStatement stmt_price = null;
 
 		try {
+			stmt_location = conn.prepareStatement(sql_location);
+			stmt_location.setString(1, exhibition.getLoc());
+			stmt_location.setString(2, exhibition.getPlace());
+			stmt_location.setString(3, exhibition.getDetails_place());
+			stmt_location.setInt(4, exhibition.getLoc_no());
+			int location_result = stmt_location.executeUpdate();
+			
+			stmt_price = conn.prepareStatement(sql_price);
+			stmt_price.setInt(1, exhibition.getPrice_adult());
+			stmt_price.setInt(2, exhibition.getPrice_student());
+			stmt_price.setInt(3, exhibition.getPrice_baby());
+			stmt_price.setInt(4, exhibition.getPrice_no());
+			int price_result = stmt_price.executeUpdate();
+			
 			stmt_exhibition = conn.prepareStatement((sql_exhibition));
 			stmt_exhibition.setString(1, exhibition.getTitle());
 			stmt_exhibition.setDate(2, exhibition.getOpen_date());
@@ -150,20 +255,6 @@ public class ExhibitionDAO {
 			stmt_exhibition.setString(6, exhibition.getIntroduction());
 			stmt_exhibition.setInt(7, exhibition.getExhibition_no());
 			int exhibition_result = stmt_exhibition.executeUpdate();
-
-			stmt_location = conn.prepareStatement(sql_location);
-			stmt_location.setString(1, exhibition.getLoc());
-			stmt_location.setString(2, exhibition.getPlace());
-			stmt_location.setString(3, exhibition.getDetails_place());
-			stmt_location.setInt(4, exhibition.getLoc_no());
-			int location_result = stmt_location.executeUpdate();
-
-			stmt_price = conn.prepareStatement(sql_price);
-			stmt_price.setInt(1, exhibition.getPrice_adult());
-			stmt_price.setInt(2, exhibition.getPrice_student());
-			stmt_price.setInt(3, exhibition.getPrice_baby());
-			stmt_price.setInt(4, exhibition.getPrice_no());
-			int price_result = stmt_price.executeUpdate();
 			
 			System.out.println("exhibition.getPrice_no()" + exhibition.getPrice_no());
 			System.out.println("exhibition.getLoc_no()" + exhibition.getLoc_no());
@@ -176,7 +267,7 @@ public class ExhibitionDAO {
 				result=1;
 			}
 			System.out.println("DAO - update() 결과: " + result);
-			return exhibition.getExhibition_no();
+			return result;
 		}catch (SQLException e) {
 			conn.rollback();  // Roll back transaction in case of error
 			throw e;
@@ -340,5 +431,94 @@ public class ExhibitionDAO {
 		JdbcUtil.close(stmt);
 	}
 	}
+
+	public Exhibition getInfo(Connection conn, int no) throws SQLException {
+		String sql = "select exhibition_no, title, PLACE " + 
+					"from exhibition " + 
+					"where exhibition_no=?";		
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Exhibition exhibition = new Exhibition();
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,no);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				int exhibition_no = rs.getInt("exhibition_no");
+				String title = rs.getString("title");
+				String place = rs.getString("PLACE");				
+				exhibition.setExhibition_no(exhibition_no);
+				exhibition.setTitle(title);
+				exhibition.setPlace(place);
+			}
+			return exhibition;
+		}finally { // 5.자원반납
+		JdbcUtil.close(rs);
+		JdbcUtil.close(stmt);
+	}
+	}
+
+	public int deleteLoc(Connection conn, String place) throws SQLException {
+		String sql ="delete from location " + 
+					"where place=?";
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			stmt = conn.createStatement();
+			stmt.execute("SET FOREIGN_KEY_CHECKS=0");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,place);
+			result = pstmt.executeUpdate();
+			stmt.execute("SET FOREIGN_KEY_CHECKS=1");
+		return result;
+		}finally { // 5.자원반납
+			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
+			
+		}
+	}
+
+	public int deletePrice(Connection conn, int exhibition_no) throws SQLException {
+		String sql ="delete from price " + 
+					"where exhibition_no=?";
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			stmt = conn.createStatement();
+			stmt.execute("SET FOREIGN_KEY_CHECKS=0");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,exhibition_no);
+			result = pstmt.executeUpdate();
+			stmt.execute("SET FOREIGN_KEY_CHECKS=1");
+		return result;
+		}finally { 
+			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
+		}
+	}
+
+	public int deleteExhibition(Connection conn, int exhibition_no) throws SQLException {
+		String sql ="delete from exhibition " + 
+					"where exhibition_no=?";
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			stmt = conn.createStatement();
+			stmt.execute("SET FOREIGN_KEY_CHECKS=0");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,exhibition_no);
+			result = pstmt.executeUpdate();
+			stmt.execute("SET FOREIGN_KEY_CHECKS=1");
+		return result;
+		}finally { 
+			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
+	
 	
 }

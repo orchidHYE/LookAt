@@ -4,14 +4,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src=../js/resetpwd.js></script>
-<link rel="stylesheet" href="../css/setpwd.css" />
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/resetpwd.js"></script>
+<link rel="stylesheet" href="../css/setpwd.css"/>
 <title>LOOK AT</title>
 </head>
 <body>
 
-	<input type = "hidden" name="settel" value="${user.tel}">
-	<form action="resetpwd.do" method="post" accept-charset="utf-8" >
+	<form action="resetpwd.do" name = "setPwd"method="post" accept-charset="utf-8" >
+	<input type = "hidden" name="settel" id= "settel" value="${user.tel}">
 	
 		<div class="logo">
 			<img src="../view/image/LOGO.png">
@@ -20,30 +21,21 @@
 		<div class ="form">
 			<div>
 				<input class="text" type="password" id="setpw" name="setpw"
-					placeholder="새로운 비밀번호">
+					placeholder="새로운 비밀번호"><br/>
+					<span id ="pw" class="spanstyle">비밀번호는 8~15자리 숫자/문자를 포함해야합니다.</span>
 			</div>
 			<div>
 				<input class="text" type="password" id="setrepw" name="setrepw"
-					placeholder="비밀번호 확인">
+					placeholder="비밀번호 확인"><br/>
+					<span id ="repw" class="spanstyle">위에 비밀번호와 동일하지 않습니다.</span>
 			</div>
-      <div id="errorContainer" style ="color: #aaaaaa; font-style: italic; font-size: 10pt;" ></div>
 		</div>
-			<div class="setpwd">
-				<input class="set" type="submit"  style="cursor: pointer;" value="로그인창으로 이동">
+			<div class="setBtn">
+				<input class="set" type="submit" id="setbtn" style="cursor: pointer;"  value="로그인창으로 이동">
 			</div>
-			
-			
-   	
 	</form>
 	
-	<script type="text/javascript">
- 
- 	var nameOrTelNotMatch = ${errors.nameOrTelNotMatch};
- 	
- 	if(nameOrTelNotMatch){
- 		var errorContainer = document.getElementById("errorContainer");
- 		errorContainer.innerHTML = "입력하신 새로운 비밀번호와 일치하지 않습니다.";
- 	}
- </script>
+		<%@ include file="../footer.jsp" %> 
+	
 </body>
 </html>

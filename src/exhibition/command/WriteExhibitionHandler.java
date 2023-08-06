@@ -99,7 +99,11 @@ public class WriteExhibitionHandler implements CommandHandler {
 		
 		// 4.View - 성공시: view/newArticleSeuccess.jsp이동
 		// 실패시 FORM_VIEW로 이동
-		return request.getContextPath() + "/view/exhibition/writeExhibitionSuccess.jsp";
+		PrintWriter writer = response.getWriter(); //브라우저에 출력
+		String msg = "<script>alert('inserted success!!');location.href="
+				     +request.getContextPath()+"'/exhibitionList.do';</script>";		
+		writer.print(msg);
+		return null;
 	}
 	
 	// 작성자 정보
@@ -197,7 +201,7 @@ public class WriteExhibitionHandler implements CommandHandler {
 		}
 		PrintWriter writer = response.getWriter(); //브라우저에 출력
 		String msg = "<script>alert('inserted success!!');location.href="
-				     +request.getContextPath()+"'/exhibition/list.do';</script>";		
+				     +request.getContextPath()+"'/exhibitionList.do';</script>";		
 		writer.print(msg);
 	} 
 }
